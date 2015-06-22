@@ -1,16 +1,73 @@
+var busyIndicator = null;
+
 function wlCommonInit(){
-	/*
-	 * Use of WL.Client.connect() API before any connectivity to a MobileFirst Server is required. 
-	 * This API should be called only once, before any other WL.Client methods that communicate with the MobileFirst Server.
-	 * Don't forget to specify and implement onSuccess and onFailure callback functions for WL.Client.connect(), e.g:
-	 *    
-	 *    WL.Client.connect({
-	 *    		onSuccess: onConnectSuccess,
-	 *    		onFailure: onConnectFailure
-	 *    });
-	 *     
-	 */
-	
-	// Common initialization code goes here
-	
+  busyIndicator = new WL.BusyIndicator();
+  loadFeeds();
+}
+
+function loadFeeds(){
+  busyIndicator.show();
+  
+  /*
+   * The REST API works with all adapters and external resources, and is supported on the following hybrid environments: 
+   * iOS, Android, Windows Phone 8, Windows 8. 
+   * If your application supports other hybrid environments, see the tutorial for MobileFirst 6.3.
+   */
+  /*
+  var resourceRequest = new WLResourceRequest("/adapters/RssReader/getStoriesFiltered", WLResourceRequest.GET);
+  resourceRequest.setQueryParameter("params", "['technology']");
+  resourceRequest.send().then(
+      loadFeedsSuccess,
+      loadFeedsFailure
+  );
+  */
+  var invocationData = {
+      adapter:    'RssAdapter',          // adapter name
+      procedure:  'getStoriesFiltered', // procedure name
+      parameters: ['technology']        // parameters if any
+  };
+
+  WL.Client.invokeProcedure(invocationData,{
+      onSuccess : loadFeedsSuccess, //success callback
+      onFailure : loadFeedsFailure // failure callback
+  });
+}
+
+
+function loadFeedsSuccess(result){
+  WL.Logger.debug("Feed retrieve success");
+  busyIndicator.hide();
+  if (result.responseJSON.Items.length>0) 
+    displayFeeds(result.responseJSON.Items);
+  else 
+    loadFeedsFailure();
+}
+
+function loadFeedsFailure(result){
+  WL.Logger.error("Feed retrieve failure");
+  busyIndicator.hide();
+  WL.SimpleDialog.show("HyJek Reader", "Service not available. Try again later.", 
+      [{
+        text : 'Reload',
+        handler : WL.Client.reloadApp 
+      },
+      {
+        text: 'Close',
+        handler : function() {}
+      }]
+    );
+}
+
+function displayFeeds(items){
+  var ul = $('#itemsList');
+  for (var i = 0; i < items.length; i++) {
+    var li = $('<li/>').text(items[i].title);
+    var pubDate = $('<div/>', {
+      'class': 'pubDate'
+    }).text(items[i].pubDate);
+
+    li.append(pubDate);
+    
+    ul.append(li);
+  }
 }

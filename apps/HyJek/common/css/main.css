@@ -2,4 +2,69 @@
 	 5725-I43 (C) Copyright IBM Corp. 2006, 2013. All Rights Reserved.
 	 US Government Users Restricted Rights - Use, duplication or
      disclosure restricted by GSA ADP Schedule Contract with IBM Corp. */
-     
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #ccc;
+}
+
+#header {
+  text-align: center;
+  background-color: #1D4D90;
+  color: #F9FAFB;
+  font-size: 16px;
+  height: 38px;
+  line-height: 38px;
+  border-bottom: 1px solid white;
+  position: fixed;
+  width: 100%;
+}
+
+#wrapper {
+  margin: auto;
+  padding-top: 38px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 18px;
+  font-family: inherit;
+}
+
+#itemsList {
+  padding: 0;
+  margin: 0;
+  margin-top: 5px;
+}
+
+#itemsList li {
+  border-bottom: 1px solid #bbb;
+  min-height: 40px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+#itemsList li .pubDate {
+  color: #555;
+  font-size: 10px;
+  font-family: Arial;
+}
+
+#itemsList li:hover {
+  background-color: #EFEFEF;
+}
+
+
+/* Provide different styling for iOS 7. */
+body.wl_ios7 {
+  padding-top: 0 !important;
+}
+
+.wl_ios7 #header {
+  padding-top: 9px;
+}
+
+.wl_ios7 #wrapper {
+  padding-top: 55px;
+}
