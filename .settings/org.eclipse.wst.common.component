@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="HyJek">
-        <property name="context-root" value="HyJek"/>
-    </wb-module>
+<?xml version='1.0' encoding='utf-8'?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+  <wb-module deploy-name="HyJek">
+    <wb-resource deploy-path="/" source-path="/apps/HyJek/common" />
+    <wb-resource deploy-path="/" source-path="/apps/HyJek/android" />
+  </wb-module>
 </project-modules>
