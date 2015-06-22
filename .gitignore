@@ -18,3 +18,10 @@ proguard/
 
 # Backup files
 *.bak
+
+# Android & iPhone build files
+
+/apps/HyJek/android/native/
+/apps/HyJek/android/nativeResources/
+/apps/HyJek/iphone/native/
+/apps/HyJek/iphone/nativeResources/

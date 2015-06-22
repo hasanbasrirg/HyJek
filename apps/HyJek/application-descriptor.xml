@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Licensed Materials - Property of IBM			 5725-I43 (C) Copyright IBM Corp. 2006, 2013. All Rights Reserved.			 US Government Users Restricted Rights - Use, duplication or             disclosure restricted by GSA ADP Schedule Contract with IBM Corp. -->
+<!-- Licensed Materials - Property of IBM
+			 5725-I43 (C) Copyright IBM Corp. 2006, 2013. All Rights Reserved.
+			 US Government Users Restricted Rights - Use, duplication or
+             disclosure restricted by GSA ADP Schedule Contract with IBM Corp. -->
 <!-- Attribute "id" must be identical to application folder name -->
-<application id="HyJek" platformVersion="7.0.0.00.20150610-1353"  
-  xmlns="http://www.worklight.com/application-descriptor"   
+<application id="HyJek" platformVersion="7.0.0.00.20150610-1353"
+  
+  xmlns="http://www.worklight.com/application-descriptor" 
+  
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <displayName>HyJek</displayName>
   <description>HyJek</description>
@@ -17,7 +22,7 @@
   <accessTokenExpiration>3600</accessTokenExpiration>
   <userIdentityRealms></userIdentityRealms>
   <features></features>
-  <android version="1.0">
+  <android version="0.1">
     <worklightSettings include="false"/>
     <security>
       <encryptWebResources enabled="false"/>
@@ -25,11 +30,11 @@
       <publicSigningKey/>
     </security>
   </android>
-  <iphone bundleId="com.HyJek" version="1.0">
+  <iphone bundleId="com.HyJek" version="0.1">
     <worklightSettings include="false"/>
     <security>
       <encryptWebResources enabled="false"/>
       <testWebResourcesChecksum enabled="false" ignoreFileExtensions="png, jpg, jpeg, gif, mp4, mp3"/>
     </security>
   </iphone>
-</application>
+</application>
