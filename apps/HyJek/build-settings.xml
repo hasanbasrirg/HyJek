@@ -8,4 +8,8 @@ disclosure restricted by GSA ADP Schedule Contract with IBM Corp. -->
     <minification level="none" includes="**"/>
     <concatenation includes="**"/>
   </android>
+  <iphone>
+    <minification level="none" includes="**"/>
+    <concatenation includes="**"/>
+  </iphone>
 </buildSettings>
