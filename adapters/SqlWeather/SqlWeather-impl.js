@@ -5,32 +5,30 @@
  *  disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-/************************************************************************
- * Implementation code for procedure - 'procedure1'
- *
- *
- * @return - invocationResult
- */
- 
-var procedure1Statement = WL.Server.createSQLStatement("select COLUMN1, COLUMN2 from TABLE1 where COLUMN3 = ?");
-function procedure1(param) {
-	return WL.Server.invokeSQLStatement({
-		preparedStatement : procedure1Statement,
-		parameters : [param]
-	});
+function getCitiesWeather(){
+  var cityList = getCitiesList();
+  for (var i = 0; i < cityList.resultSet.length; i++) {
+    var yahooWeatherData = getCityWeather(cityList.resultSet[i].identifier);
+
+    if (yahooWeatherData.isSuccessful)
+      cityList.resultSet[i].weather = yahooWeatherData.rss.channel.item.description;
+  }
+  return cityList;
 }
 
-/************************************************************************
- * Implementation code for procedure - 'procedure2'
- *
- *
- * @return - invocationResult
- */
- 
-function procedure2(param) {
-	return WL.Server.invokeSQLStoredProcedure({
-		procedure : "storedProcedure2",
-		parameters : [param]
-	});
+var getCitiesListStatement = WL.Server.createSQLStatement("select city, identifier, summary from weather;");
+
+function getCitiesList() {
+  return WL.Server.invokeSQLStatement({
+    preparedStatement : getCitiesListStatement,
+    parameters : []
+  });
 }
 
+function getCityWeather(woeid){
+  return WL.Server.invokeProcedure({
+    adapter : 'HttpWeather',
+    procedure : 'getYahooWeather',
+    parameters : [woeid]
+  });
+}
