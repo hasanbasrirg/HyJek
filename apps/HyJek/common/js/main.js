@@ -1,87 +1,65 @@
 var busyIndicator = null;
+var citiesList = null;
 
 function wlCommonInit(){
-  busyIndicator = new WL.BusyIndicator();
-  loadFeeds();
+  busyIndicator = new WL.BusyIndicator("AppBody");
+  $('#citiesList').change(citySelectionChange);
+  getCitiesList();
 }
 
-function loadFeeds(){
+function getCitiesList() {
   busyIndicator.show();
-  
-  /*
-   * The REST API works with all adapters and external resources, and is supported on the following hybrid environments: 
-   * iOS, Android, Windows Phone 8, Windows 8. 
-   * If your application supports other hybrid environments, see the tutorial for MobileFirst 6.3.
-   */
-  /*
-  var resourceRequest = new WLResourceRequest("/adapters/RssReader/getStoriesFiltered", WLResourceRequest.GET);
-  resourceRequest.setQueryParameter("params", "['technology']");
+  var resourceRequest = new WLResourceRequest("/adapters/SqlWeather/getCitiesWeather", WLResourceRequest.GET, 30000);
   resourceRequest.send().then(
-      loadFeedsSuccess,
-      loadFeedsFailure
+    getCitiesListSuccess,
+    getCitiesListFailure
   );
-  */
+
+  /*
   var invocationData = {
-      adapter:    'RssAdapter',          // adapter name
-      procedure:  'getStoriesFiltered', // procedure name
-      parameters: ['technology']        // parameters if any
+      adapter:    'SqlWeather',
+      procedure:  'getCitiesWeather',
   };
-
-  /*
-   * The REST API works with all adapters and external resources, and is supported on the following hybrid environments: 
-   * iOS, Android, Windows Phone 8, Windows 8. 
-   * If your application supports other hybrid environments, see the tutorial for MobileFirst 6.3.
-   */
-  /*
-  var resourceRequest = new WLResourceRequest("/adapters/RSSReader/getFeedsFiltered", WLResourceRequest.GET);
-  resourceRequest.setQueryParameter("params", "['technology']");
-  resourceRequest.send().then(
-      loadFeedsSuccess,
-      loadFeedsFailure
-  );
-  */
-  
   WL.Client.invokeProcedure(invocationData,{
-      onSuccess : loadFeedsSuccess, //success callback
-      onFailure : loadFeedsFailure // failure callback
+      onSuccess : getCitiesListSuccess,
+      onFailure : getCitiesListFailure
   });
+  */
 }
 
-
-function loadFeedsSuccess(result){
-  WL.Logger.debug("Feed retrieve success");
-  busyIndicator.hide();
-  if (result.responseJSON.Items.length>0) 
-    displayFeeds(result.responseJSON.Items);
-  else 
-    loadFeedsFailure();
-}
-
-function loadFeedsFailure(result){
-  WL.Logger.error("Feed retrieve failure");
-  busyIndicator.hide();
-  WL.SimpleDialog.show("HyJek Reader", "Service not available. Try again later.", 
-      [{
-        text : 'Reload',
-        handler : WL.Client.reloadApp 
-      },
-      {
-        text: 'Close',
-        handler : function() {}
-      }]
-    );
-}
-
-function displayFeeds(items){
-  var ul = $('#itemsList');
-  for (var i = 0; i < items.length; i++) {
-    var li = $('<li/>').text(items[i].title);
-    var pubDate = $('<div/>', {
-      'class': 'pubDate'
-    }).text(items[i].pubDate);
-
-    li.append(pubDate);
-    
-    ul.append(li);
+function getCitiesListSuccess(response) {
+  if (response.responseJSON.resultSet.length == 0)
+    getCitiesListFailure();
+  else {
+    citiesList = response.responseJSON.resultSet;
+    fillCitiesList();
   }
+}
+
+function getCitiesListFailure(response) {
+  WL.Logger.debug("CityWeather::getCitiesListFailure");
+  busyIndicator.hide();
+  WL.SimpleDialog.show("CityWeather",
+    "Can't get cities list. Check database connection", [{
+      text : 'Reload app',
+      handler : WL.Client.reloadApp
+    }]
+  );
+}
+
+function fillCitiesList(){
+  $('#citiesList').empty();
+  for (var i = 0; i < citiesList.length; i++) {
+    var elem = $("<option/>").html(citiesList[i].city);
+    $('#citiesList').append(elem);
+  }
+  busyIndicator.hide();
+  citySelectionChange();
+}
+
+function citySelectionChange() {
+  var index = $('#citiesList').prop("selectedIndex");
+  var citySumm = citiesList[index].summary;
+  var cityWeather = citiesList[index].weather;
+  $('#info').html(cityWeather + "<br>" + citySumm.slice(0, 200) + "...");
 }
