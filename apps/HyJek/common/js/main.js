@@ -27,6 +27,20 @@ function loadFeeds(){
       parameters: ['technology']        // parameters if any
   };
 
+  /*
+   * The REST API works with all adapters and external resources, and is supported on the following hybrid environments: 
+   * iOS, Android, Windows Phone 8, Windows 8. 
+   * If your application supports other hybrid environments, see the tutorial for MobileFirst 6.3.
+   */
+  /*
+  var resourceRequest = new WLResourceRequest("/adapters/RSSReader/getFeedsFiltered", WLResourceRequest.GET);
+  resourceRequest.setQueryParameter("params", "['technology']");
+  resourceRequest.send().then(
+      loadFeedsSuccess,
+      loadFeedsFailure
+  );
+  */
+  
   WL.Client.invokeProcedure(invocationData,{
       onSuccess : loadFeedsSuccess, //success callback
       onFailure : loadFeedsFailure // failure callback
