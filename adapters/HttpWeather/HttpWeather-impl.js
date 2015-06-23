@@ -7,7 +7,7 @@
 
 /**
  *  WL.Server.invokeHttp(parameters) accepts the following json object as an argument:
- *  
+ *
  *  {
  *    // Mandatory
  *    method : 'get' , 'post', 'delete' , 'put' or 'head'
