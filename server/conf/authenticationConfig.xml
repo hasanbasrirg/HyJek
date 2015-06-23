@@ -60,6 +60,14 @@
       <test realm="SampleAppRealm" isInternalUserID="true"/>
     </customSecurityTest>
 
+    <customSecurityTest name="SingleStepAuthAdapter-securityTest">
+      <test realm="SingleStepAuthRealm" isInternalUserID="true"/>
+    </customSecurityTest>
+    <customSecurityTest name="DoubleStepAuthAdapter-securityTest">
+      <test realm="DoubleStepAuthRealm" isInternalUserID="true"/>
+    </customSecurityTest>
+
+
   </securityTests>
 
   <realms>
@@ -69,6 +77,18 @@
 
     <realm name="SubscribeServlet" loginModule="rejectAll">
       <className>com.worklight.core.auth.ext.HeaderAuthenticator</className>
+    </realm>
+
+    <realm name="SingleStepAuthRealm" loginModule="AuthLoginModule">
+      <className>com.worklight.integration.auth.AdapterAuthenticator</className>
+      <parameter name="login-function" value="SingleStepAuthAdapter.onAuthRequired" />
+      <parameter name="logout-function" value="SingleStepAuthAdapter.onLogout" />
+    </realm>
+
+    <realm name="DoubleStepAuthRealm" loginModule="AuthLoginModule">
+      <className>com.worklight.integration.auth.AdapterAuthenticator</className>
+      <parameter name="login-function" value="DoubleStepAuthAdapter.onAuthRequired" />
+      <parameter name="logout-function" value="DoubleStepAuthAdapter.onLogout" />
     </realm>
 
     <!-- For client logger -->
@@ -116,6 +136,10 @@
 
     <loginModule name="rejectAll">
       <className>com.worklight.core.auth.ext.RejectingLoginModule</className>
+    </loginModule>
+
+    <loginModule name="AuthLoginModule">
+      <className>com.worklight.core.auth.ext.NonValidatingLoginModule</className>
     </loginModule>
 
     <!-- Required for Trusteer - wl_basicTrusteerFraudDetectionRealm -->
