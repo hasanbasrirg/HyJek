@@ -3,7 +3,7 @@ function wlCommonInit(){
 }
 
 function getSecretData(){
-  var resourceRequest = new WLResourceRequest("/adapters/DummyAdapter/getSecretData", WLResourceRequest.GET, 30000);
+  var resourceRequest = new WLResourceRequest("/adapters/DoubleStepAuthAdapter/getSecretData", WLResourceRequest.GET, 30000);
   resourceRequest.send().then(
     getSecretData_CallbackOK,
     getSecretData_CallbackFail
